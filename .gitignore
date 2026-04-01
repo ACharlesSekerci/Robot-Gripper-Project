@@ -24,3 +24,9 @@ Thumbs.db
 
 # Matplotlib cache
 .mplconfig/
+
+# Local working files (not needed on GitHub)
+sandbox/
+RobotGeek 9G Servo Gripper - 2083312/
+GripperParts_PaperTemplates.pdf
+generate_templates.py

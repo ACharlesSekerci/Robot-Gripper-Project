@@ -88,14 +88,13 @@ Use hand gesture recognition to control the gripper to **grasp objects from one 
 | — | `Fitec-9g.stl` | — | Reference only — do NOT print |
 | — | `GripperASM.stl` | — | Assembly reference — do NOT print |
 
-### Hole Modifications (done via Python/trimesh in sandbox)
+### Hole Modifications (done via Python/trimesh)
 - 7 parts modified: BottomPlate, TopPlate, LeftFinger, RightFinger, FingerTip-Plate, 3mmSpacer, 15mmStandoff
 - All ~3.0 mm screw holes → **2.8 mm**
 - Servo mount holes (2.0 mm) left unchanged
-- Modified files in `sandbox/modified/`, originals safe in `sandbox/original/`
 
-### Deliverables
-- STL files for all parts
+### Print-Ready Files
+- All modified STL files are in the **`STL_PrintReady/`** folder — print these
 - Naming convention: `S<section>G<group>_PartName.stl`
 
 ---
