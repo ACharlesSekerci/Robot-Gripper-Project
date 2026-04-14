@@ -2,7 +2,17 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import os
+import sys
 from collections import deque
+
+
+def _default_hand_landmarker_delegate():
+    """GPU delegate on macOS often aborts with unsupported ImageFrame format for webcam RGB."""
+    if os.environ.get("MEDIAPIPE_FORCE_GPU", "").strip() in ("1", "true", "yes"):
+        return mp.tasks.BaseOptions.Delegate.GPU
+    if sys.platform == "darwin":
+        return mp.tasks.BaseOptions.Delegate.CPU
+    return mp.tasks.BaseOptions.Delegate.GPU
 
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = mp.tasks.vision.HandLandmarker
@@ -25,10 +35,11 @@ class HandTracker:
     def __init__(self, smoothing_window=5, min_detection_confidence=0.7, min_tracking_confidence=0.6):
         model_path = os.path.join(os.path.dirname(__file__), "hand_landmarker.task")
 
+        delegate = _default_hand_landmarker_delegate()
         options = HandLandmarkerOptions(
             base_options=BaseOptions(
                 model_asset_path=model_path,
-                delegate=BaseOptions.Delegate.GPU,
+                delegate=delegate,
             ),
             running_mode=RunningMode.VIDEO,
             num_hands=1,
@@ -47,8 +58,16 @@ class HandTracker:
     def process_frame(self, frame):
         """Process a BGR frame and return (annotated_frame, openness).
         openness: 0.0 = fist, 1.0 = fully open, None = no hand
+
+        NOTE (Arduino repo uses cvzone HandDetector.fingersUp() which returns
+        a 5-element binary list [thumb, index, middle, ring, pinky].
+        We use continuous openness (0.0–1.0) instead — better for proportional
+        servo control. A fingersUp()-style discrete mode could be added as an
+        alternative if distinct finger gestures are needed later.)
         """
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Contiguous uint8 buffer avoids edge cases with GPU/Metal and OpenCV views.
+        rgb = np.ascontiguousarray(rgb)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
 
         self._frame_timestamp += 33  # ~30fps in ms

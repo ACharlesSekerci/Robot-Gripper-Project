@@ -69,6 +69,11 @@ class SerialController:
 
         angle = max(0, min(180, int(angle)))
 
+        # TODO (from Arduino repo idea): add self._prev_angle and skip write
+        # when angle == self._prev_angle, like their prev_finger_count pattern.
+        # Currently we already rate-limit at 50ms, but dedup would also avoid
+        # sending identical values when the hand is steady.
+
         now = time.time()
         if now - self._last_send_time < self._min_interval:
             return True  # Skip, too fast
