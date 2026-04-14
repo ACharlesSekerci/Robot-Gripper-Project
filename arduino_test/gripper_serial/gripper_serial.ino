@@ -1,7 +1,7 @@
 #include <Servo.h>
 
 Servo gripperServo;
-const int SERVO_PIN = A2;
+const int SERVO_PIN = 9;
 const int DEFAULT_ANGLE = 90;
 
 int currentAngle = DEFAULT_ANGLE;

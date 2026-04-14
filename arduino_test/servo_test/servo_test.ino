@@ -3,8 +3,8 @@
 Servo gripperServo;
 const int SERVO_PIN = 9;
 
-const int OPEN_ANGLE = 60;
-const int CLOSE_ANGLE = 120;
+const int OPEN_ANGLE = 10;
+const int CLOSE_ANGLE = 170;
 const int STEP_DELAY = 15;  // ms between each degree
 
 void setup() {
