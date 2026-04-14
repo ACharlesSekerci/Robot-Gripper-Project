@@ -18,7 +18,7 @@ class SerialController:
         """Find the Arduino Mega serial port automatically."""
         ports = serial.tools.list_ports.comports()
         for port in ports:
-            desc = (port.description + port.manufacturer_string).lower() if port.manufacturer else port.description.lower()
+            desc = (port.description + " " + port.manufacturer).lower() if port.manufacturer else port.description.lower()
             if any(keyword in desc for keyword in ["arduino", "mega", "usb", "usbmodem", "usbserial", "ch340", "cp210"]):
                 return port.device
         # Fallback: return first /dev/cu.usbmodem or COM port
