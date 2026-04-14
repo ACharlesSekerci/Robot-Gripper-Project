@@ -1,0 +1,5 @@
+pyserial
+customtkinter
+mediapipe
+opencv-contrib-python
+pillow
