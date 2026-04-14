@@ -125,7 +125,7 @@ class HandTracker:
         distances = [np.linalg.norm(pt(t) - wrist) for t in tips]
 
         avg_dist = np.mean(distances)
-        openness = (avg_dist / palm_size - 1.2) / (3.5 - 1.2)
+        openness = (avg_dist / palm_size - 1.5) / (2.8 - 1.5)
         return float(np.clip(openness, 0.0, 1.0))
 
     def openness_to_angle(self, openness, open_angle=10, close_angle=170):
@@ -135,7 +135,7 @@ class HandTracker:
         """
         if openness is None:
             return None
-        return int(close_angle + (open_angle - close_angle) * openness)
+        return int(open_angle + (close_angle - open_angle) * openness)
 
     def release(self):
         """Release MediaPipe resources."""
